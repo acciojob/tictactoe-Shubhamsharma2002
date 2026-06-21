@@ -1,9 +1,7 @@
-//your JS code here. If required.
 document.getElementById('submit').addEventListener('click', function() {
-	const player1 = document.getElementById('player-1').value.trim();
-	const player2 = document.getElementById('player-2').value.trim();
+	const player1 = document.getElementById('player1').value.trim();
+	const player2 = document.getElementById('player2').value.trim();
 
-	// Validation to make sure names are entered
 	if (!player1 || !player2) {
 		alert("Please enter names for both players!");
 		return;
@@ -20,14 +18,14 @@ document.getElementById('submit').addEventListener('click', function() {
 	const gameScreen = document.getElementById('game-screen');
 	const cells = document.querySelectorAll('.cell');
 
-	// Switch views
+	// Switch screens
 	setupScreen.classList.add('hidden');
 	gameScreen.classList.remove('hidden');
 
 	// Set initial turn message
 	messageDiv.textContent = `${currentPlayer}, you're up`;
 
-	// Winning combinations
+	// Winning combinations mapping matching 1-based cell IDs to 0-based array index
 	const winningCombinations = [
 		[0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
 		[0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
@@ -50,16 +48,16 @@ document.getElementById('submit').addEventListener('click', function() {
 		cell.addEventListener('click', function() {
 			const index = parseInt(cell.id) - 1;
 
-			// If cell is already taken or game is over, do nothing
+			// Do nothing if cell is already marked or game is over
 			if (boardState[index] !== '' || !gameActive) {
 				return;
 			}
 
-			// Update backend state and UI
+			// Update state and UI
 			boardState[index] = currentSymbol;
 			cell.textContent = currentSymbol;
 
-			// Check condition
+			// Check status
 			if (checkWin()) {
 				messageDiv.textContent = `${currentPlayer} congratulations you won!`;
 				gameActive = false;
@@ -72,7 +70,7 @@ document.getElementById('submit').addEventListener('click', function() {
 				return;
 			}
 
-			// Switch turn
+			// Alternating turns
 			if (currentPlayer === player1) {
 				currentPlayer = player2;
 				currentSymbol = 'o';
